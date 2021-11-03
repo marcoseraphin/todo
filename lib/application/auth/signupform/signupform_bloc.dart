@@ -10,8 +10,7 @@ class SignupformBloc extends Bloc<SignupformEvent, SignupformState> {
             isSubmitting: false, showValidationMessages: false)) {
     on<RegisterWithEMailAndPasswordPressed>((event, emit) {
       if (event.email == null || event.password == null) {
-        emit(
-            SignupformState(isSubmitting: false, showValidationMessages: true));
+        emit(state.copyWith(isSubmitting: false, showValidationMessages: true));
       } else {
         emit(
             SignupformState(isSubmitting: true, showValidationMessages: false));
