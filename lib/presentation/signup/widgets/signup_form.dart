@@ -1,6 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/application/auth/signupform/signupform_bloc.dart';
+import 'package:todo/core/Failures/auth_failures.dart';
+import 'package:todo/presentation/routes/router.gr.dart';
 import 'package:todo/presentation/signup/widgets/signin_register_button.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -39,10 +42,33 @@ class SignUpForm extends StatelessWidget {
       }
     }
 
+    String mapFailureMessage(AuthFailure failure) {
+      switch (failure.runtimeType) {
+        case ServerFailure:
+          return "something went wrong";
+        case EMailAlreadyInUseFailure:
+          return "eMail already in use";
+        case InvalidEMailAndPasswordCombinationFailure:
+          return "invalid eMail and passwod combination";
+
+        default:
+          return "something went wrong";
+      }
+    }
+
     return BlocConsumer<SignupformBloc, SignupformState>(
       listener: (context, state) {
-        // TODO: naviagte to other page if auth was successfull
-        // TODO: show error message if auth was not successfull
+        state.authFailureOrSuccessOption.fold(
+            () => {},
+            (eitherFailureOrSuccess) => eitherFailureOrSuccess.fold((failure) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(mapFailureMessage(failure),
+                        style: themeData.textTheme.bodyText1),
+                    backgroundColor: Colors.redAccent,
+                  ));
+                }, (_) {
+                  AutoRouter.of(context).push(const HomePageRoute());
+                }));
       },
       builder: (context, state) {
         return Form(
