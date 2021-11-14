@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo/core/Failures/auth_failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:todo/domain/entities/user.dart';
 import 'package:todo/domain/repositories/auth_repository.dart';
+import 'package:todo/infrastructure/models/firebase_user_mapper.dart';
 
 class AuthRepositoryImpl implements AuthRepostory {
   final FirebaseAuth firebaseAuth;
@@ -39,4 +41,12 @@ class AuthRepositoryImpl implements AuthRepostory {
       }
     }
   }
+
+  @override
+  Future<void> signOut() => Future.wait([firebaseAuth.signOut()]);
+
+  @override
+  // toDomain is extension method for FireBase User type (=> map to CustomUser) (like PartialClass)
+  Option<CustomUser> getSignedInUser() =>
+      optionOf(firebaseAuth.currentUser?.toDomain());
 }
