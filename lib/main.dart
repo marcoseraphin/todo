@@ -27,18 +27,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-            create: (context) => sl<AuthBloc>()..add(AuthCheckRequestedEvent()))
-      ],
-      child: MaterialApp.router(
-          routeInformationParser: _appRouter.defaultRouteParser(),
-          routerDelegate: _appRouter.delegate(),
-          title: 'ToDo App',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.dark),
-    );
+        providers: [
+          BlocProvider(
+              create: (context) =>
+                  sl<AuthBloc>()..add(AuthCheckRequestedEvent()))
+        ],
+        child: MaterialApp.router(
+            routeInformationParser: _appRouter.defaultRouteParser(),
+            routerDelegate: _appRouter.delegate(),
+            title: 'ToDo App',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: ThemeMode.dark));
   }
 }
