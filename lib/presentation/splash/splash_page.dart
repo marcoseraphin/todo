@@ -11,19 +11,32 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is AuthStateAuthenticated) {
           // navigate to Home
+          await Future.delayed(const Duration(seconds: 3));
           context.router.replace(const HomePageRoute());
         } else if (state is AuthStateUnauthenticated) {
           // navigate to signin page
+          await Future.delayed(const Duration(seconds: 3));
           context.router.replace(const SignUpPageRoute());
         }
       },
       child: Scaffold(
-          body: Center(
-        child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary),
+          body: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Column(
+          children: [
+            const Icon(
+              Icons.people,
+              size: 100.0,
+            ),
+            Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.secondary),
+            ),
+          ],
+        ),
       )),
     );
   }
